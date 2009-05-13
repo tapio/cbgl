@@ -1,0 +1,91 @@
+Include "glConsts.cb"
+Include "cbGL.cb"
+
+Const scrW = 640
+Const scrH = 480
+
+cbglInit(scrW,scrH)
+
+' ReSizeGLScene
+cbgl4i(glViewport, 0, 0, scrW, scrH)                      ' Reset The Current Viewport
+cbgl1i(glMatrixMode, GL_PROJECTION)                       ' Select The Projection Matrix
+cbgl0(glLoadIdentity)                                     ' Reset The Projection Matrix
+cbgl4f(gluPerspective, 45.0, Float(scrW)/Float(scrH), 0.1, 100.0)       ' Calculate The Aspect Ratio Of The Window
+cbgl1i(glMatrixMode, GL_MODELVIEW)                        ' Select The Modelview Matrix
+cbgl0(glLoadIdentity)                                     ' Reset The Modelview Matrix
+
+' All Setup For OpenGL Goes Here
+cbgl1i(glShadeModel, GL_SMOOTH)                           ' Enable Smooth Shading
+cbgl4f(glClearColor, 0.0, 0.0, 0.0, 0.5)                  ' Black Background
+cbgl1f(glClearDepth, 1.0)                                 ' Depth Buffer Setup
+cbgl1i(glEnable, GL_DEPTH_TEST)                           ' Enables Depth Testing
+cbgl1i(glDepthFunc, GL_LEQUAL)                            ' The Type Of Depth Testing To Do
+cbgl2i(glHint, GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) ' Really Nice Perspective Calculations
+cbgl1i(glEnable, GL_TEXTURE_2D)                           ' Enable Texture Mapping ( NEW )
+
+Dim tex
+tex = cbglLoadImage("test.png")
+
+' Generate a display list for the cube
+cbgl2i(glNewList, 1, GL_COMPILE)
+    cbgl2i(glBindTexture, GL_TEXTURE_2D, tex)
+    cbgl1i(glBegin, GL_QUADS)                                        ' Draw A Quad
+			' Front Face
+			cbgl2f(glTexCoord, 0.0, 0.0) : cbgl3f(glVertex, -1.0, -1.0,  1.0)  ' Bottom Left Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 0.0) : cbgl3f(glVertex,  1.0, -1.0,  1.0)  ' Bottom Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 1.0) : cbgl3f(glVertex,  1.0,  1.0,  1.0)  ' Top Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 1.0) : cbgl3f(glVertex, -1.0,  1.0,  1.0)  ' Top Left Of The Texture and Quad
+			' Back Face
+			cbgl2f(glTexCoord, 1.0, 0.0) : cbgl3f(glVertex, -1.0, -1.0, -1.0)  ' Bottom Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 1.0) : cbgl3f(glVertex, -1.0,  1.0, -1.0)  ' Top Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 1.0) : cbgl3f(glVertex,  1.0,  1.0, -1.0)  ' Top Left Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 0.0) : cbgl3f(glVertex,  1.0, -1.0, -1.0)  ' Bottom Left Of The Texture and Quad
+			' Top Face
+			cbgl2f(glTexCoord, 0.0, 1.0) : cbgl3f(glVertex, -1.0,  1.0, -1.0)  ' Top Left Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 0.0) : cbgl3f(glVertex, -1.0,  1.0,  1.0)  ' Bottom Left Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 0.0) : cbgl3f(glVertex,  1.0,  1.0,  1.0)  ' Bottom Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 1.0) : cbgl3f(glVertex,  1.0,  1.0, -1.0)  ' Top Right Of The Texture and Quad
+			' Bottom Face
+			cbgl2f(glTexCoord, 1.0, 1.0) : cbgl3f(glVertex, -1.0, -1.0, -1.0)  ' Top Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 1.0) : cbgl3f(glVertex,  1.0, -1.0, -1.0)  ' Top Left Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 0.0) : cbgl3f(glVertex,  1.0, -1.0,  1.0)  ' Bottom Left Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 0.0) : cbgl3f(glVertex, -1.0, -1.0,  1.0)  ' Bottom Right Of The Texture and Quad
+			' Right face
+			cbgl2f(glTexCoord, 1.0, 0.0) : cbgl3f(glVertex,  1.0, -1.0, -1.0)  ' Bottom Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 1.0) : cbgl3f(glVertex,  1.0,  1.0, -1.0)  ' Top Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 1.0) : cbgl3f(glVertex,  1.0,  1.0,  1.0)  ' Top Left Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 0.0) : cbgl3f(glVertex,  1.0, -1.0,  1.0)  ' Bottom Left Of The Texture and Quad
+			' Left Face
+			cbgl2f(glTexCoord, 0.0, 0.0) : cbgl3f(glVertex, -1.0, -1.0, -1.0)  ' Bottom Left Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 0.0) : cbgl3f(glVertex, -1.0, -1.0,  1.0)  ' Bottom Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 1.0, 1.0) : cbgl3f(glVertex, -1.0,  1.0,  1.0)  ' Top Right Of The Texture and Quad
+			cbgl2f(glTexCoord, 0.0, 1.0) : cbgl3f(glVertex, -1.0,  1.0, -1.0)  ' Top Left Of The Texture and Quad                 ' Bottom Right Of The Quad (Right)
+    cbgl0(glEnd)   
+cbgl0(glEndList)
+
+
+Dim xrot#, yrot#, zrot#
+Dim t
+// --- MAIN LOOP --- //
+Repeat
+    cbgl1i(glClear, GL_COLOR_BUFFER_BIT + GL_DEPTH_BUFFER_BIT)    ' Clear Screen And Depth Buffer
+    
+    cbgl0(glLoadIdentity)                                         ' Reset The Current Modelview Matrix
+    cbgl3f(glTranslate, 0.0, 0.0, -5.0)                         ' Move Left 1.5 Units And Into The Screen 6.0
+    cbgl4f(glRotate, xrot, 1.0, 0.0, 0.0)                        ' Rotate The Triangle On The X axis
+    cbgl4f(glRotate, yrot, 0.0, 1.0, 0.0)                        ' Rotate The Triangle On The Y axis
+    cbgl4f(glRotate, zrot, 0.0, 0.0, 1.0)                        ' Rotate The Triangle On The Z axis
+
+    cbgl1i(glCallList, 1)                                         ' Call Pyramid Display List                                  ' Call Cube Display List
+
+    xrot + 0.3     ' X Axis Rotation
+    yrot + 0.2     ' Y Axis Rotation
+    zrot + 0.4     ' Z Axis Rotation  
+    
+    cbglFlip()
+    
+    If cbglKeyDown(cbkeyesc) Then cbglTerminate(): End
+    cbglSetWindow("FPS: "+Str(1000.0 / (Timer()-t)))
+    t = Timer()
+Forever
+

@@ -1,0 +1,78 @@
+Wrapped OpenGL commands in cbGL
+
+cbgl0:
+ * glLoadIdentity
+ * glPushMatrix
+ * glPopMatrix
+ * glEnd
+ * glEndList
+
+
+cbgl1i:
+ * glMatrixMode
+ * glEnable
+ * glDisable
+ * glBegin
+ * glClear
+ * glCallList
+ * glShadeModel
+ * glDepthMask
+ * glMatrixMode
+ * glPushAttrib
+ * glDepthFunc
+ * glCullFace
+
+
+cbgl2i:
+ * glVertex2i
+ * glBindTexture
+ * glRasterPos2i
+ * glBlendFunc
+ * glHint
+ * glNewList
+ * glFogi
+ * glLightModeli
+
+
+cbgl3i:
+ * glVertex3i
+ * glTexParameteri
+ * glColor31
+ * glNormal3i
+ * glLighti
+
+
+cbgl4i:
+ * glColor4i
+ * glViewport
+
+
+cbgl1f:
+ * glClearDepth
+ * glLineWidth
+ * glPointSize
+
+
+cbgl2f:
+ * glTexCoord2f
+ * glVertex2f
+ * glRasterPos2f
+ * glFogf
+ * glLightModelf
+
+
+cbgl3f:
+ * glVertex3f
+ * glTranslatef
+ * glNormal3f
+ * glScalef
+ * glColor3f
+ * glLightf
+
+
+cbgl4f
+ * glRotatef
+ * glColor4f
+ * glClearColor
+ * gluPerspective
+ * gluOrtho2d

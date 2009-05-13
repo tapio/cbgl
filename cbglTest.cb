@@ -1,0 +1,47 @@
+Include "cbGL.cb"
+
+cbglInit(800,600,0)
+
+' ladataan fontti kuva
+fontti = cbglLoadImage("font.png")
+
+img = cbglLoadImage("kukka.png")
+
+fontd# = .003
+fontsize# = 1.0
+Repeat
+    
+    cbglCls()
+    
+    'Tässä on grafiikka primitiivien piirtelyä
+    'For i = 1 To 100
+    '    cbglColor(Rand(0,255),Rand(0,255),Rand(0,255))
+    '    cbglLine(Rand(0,800),Rand(0,600),Rand(0,800),Rand(0,600))
+    '    cbglCircle(Rand(0,800),Rand(0,600),Rand(5,30),Rand(0,1))
+    '    cbglBox(Rand(0,800),Rand(0,600),Rand(0,800),Rand(0,600),Rand(0,1))
+    'Next i
+
+    'Tässä on kuva demoa
+    alpha# = WrapAngle(alpha+.03)
+    rot#   = WrapAngle(rot+.06)
+    scale# = WrapAngle(scale+.1)
+    cbglDrawImage(img,50,100,Abs(Sin(rot)*360.0))
+    cbglDrawImage(img,200,100,0,Abs(Sin(scale)*1.5))
+    cbglDrawImage(img,400,100,0,1,Abs(Sin(alpha)*255))
+    
+    'Tässä on teksti demoa
+    cbglColor(200,0,0)
+    cbglText(10,10,"FPS: " + Str(1000.0 / (Timer()-t)), fontti)
+    
+    cbglColor(255,255,0)
+    fontsize# + fontd#
+    If fontsize <= .2 Or fontsize >= 2 Then fontd = -fontd
+    cbglText(30,560,"Powered by: cbGL", fontti, fontsize)    
+    
+    If cbglKeyDown(cbkeyesc) Then End   
+    cbglFlip()
+       
+    cbglSetWindow("cbGL 2d Demo - FPS: "+Str(1000.0 / (Timer()-t)))
+
+    t = Timer()
+Forever

@@ -1,0 +1,125 @@
+Include "glConsts.cb"
+Include "cbGL.cb"
+
+Const scrW = 640
+Const scrH = 480
+
+cbglInit(scrW,scrH)
+
+' ReSizeGLScene
+cbgl4i(glViewport, 0, 0, scrW, scrH)                      ' Reset The Current Viewport
+cbgl1i(glMatrixMode, GL_PROJECTION)                       ' Select The Projection Matrix
+cbgl0(glLoadIdentity)                                     ' Reset The Projection Matrix
+cbgl4f(gluPerspective, 45.0, Float(scrW)/Float(scrH), 0.1, 100.0)       ' Calculate The Aspect Ratio Of The Window
+cbgl1i(glMatrixMode, GL_MODELVIEW)                        ' Select The Modelview Matrix
+cbgl0(glLoadIdentity)                                     ' Reset The Modelview Matrix
+
+' All Setup For OpenGL Goes Here
+cbgl1i(glShadeModel, GL_SMOOTH)                           ' Enable Smooth Shading
+cbgl4f(glClearColor, 0.0, 0.0, 0.0, 0.5)                  ' Black Background
+cbgl1f(glClearDepth, 1.0)                                 ' Depth Buffer Setup
+cbgl1i(glEnable, GL_DEPTH_TEST)                           ' Enables Depth Testing
+cbgl1i(glDepthFunc, GL_LEQUAL)                            ' The Type Of Depth Testing To Do
+cbgl2i(glHint, GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST) ' Really Nice Perspective Calculations
+cbgl4f(glColor,1.0,0.0,0.0,0.5)
+
+' Generate a display list for pyramid
+cbgl2i(glNewList, 1, GL_COMPILE)
+    cbgl1i(glBegin, GL_TRIANGLES)                                 ' Start Drawing A Triangle
+        cbgl3f(glColor, 1.0, 0.0, 0.0)                          ' Red
+        cbgl3f(glVertex, 0.0, 1.0, 0.0)                         ' Top Of Triangle (Front)
+        cbgl3f(glColor, 0.0, 1.0, 0.0)                          ' Green
+        cbgl3f(glVertex, -1.0, -1.0, 1.0)                       ' Left Of Triangle (Front)
+        cbgl3f(glColor,   0.0, 0.0, 1.0)                        ' Blue
+        cbgl3f(glVertex, 1.0, -1.0, 1.0)                        ' Right Of Triangle (Front)
+    
+        cbgl3f(glColor, 1.0, 0.0, 0.0)                          ' Red
+        cbgl3f(glVertex, 0.0, 1.0, 0.0)                         ' Top Of Triangle (Right)
+        cbgl3f(glColor, 0.0, 0.0, 1.0)                          ' Blue
+        cbgl3f(glVertex, 1.0, -1.0, 1.0)                        ' Left Of Triangle (Right)
+        cbgl3f(glColor, 0.0, 1.0, 0.0)                          ' Green
+        cbgl3f(glVertex, 1.0, -1.0, -1.0)                       ' Right Of Triangle (Right)
+
+        cbgl3f(glColor, 1.0, 0.0, 0.0)                          ' Red
+        cbgl3f(glVertex, 0.0, 1.0, 0.0)                         ' Top Of Triangle (Back)
+        cbgl3f(glColor, 0.0, 1.0, 0.0)                          ' Green
+        cbgl3f(glVertex, 1.0, -1.0, -1.0)                       ' Left Of Triangle (Back)
+        cbgl3f(glColor, 0.0, 0.0, 1.0)                          ' Blue
+        cbgl3f(glVertex, -1.0, -1.0, -1.0)                      ' Right Of Triangle (Back)
+    
+        cbgl3f(glColor, 1.0, 0.0, 0.0)                          ' Red
+        cbgl3f(glVertex, 0.0, 1.0, 0.0)                         ' Top Of Triangle (Left)
+        cbgl3f(glColor, 0.0, 0.0, 1.0)                          ' Blue
+        cbgl3f(glVertex, -1.0, -1.0, -1.0)                      ' Left Of Triangle (Left)
+        cbgl3f(glColor, 0.0, 1.0, 0.0)                          ' Green
+        cbgl3f(glVertex, -1.0, -1.0, 1.0)                       ' Right Of Triangle (Left)
+    cbgl0(glEnd)
+cbgl0(glEndList)
+
+' Generate a display list for cube
+cbgl2i(glNewList, 2, GL_COMPILE)
+    cbgl1i(glBegin, GL_QUADS)                                        ' Draw A Quad
+        cbgl3f(glColor, 0.0, 1.0, 0.0)                             ' Set The Color To Blue
+        cbgl3f(glVertex, 1.0, 1.0, -1.0)                           ' Top Right Of The Quad (Top)
+        cbgl3f(glVertex, -1.0, 1.0, -1.0)                          ' Top Left Of The Quad (Top)
+        cbgl3f(glVertex, -1.0, 1.0, 1.0)                           ' Bottom Left Of The Quad (Top)
+        cbgl3f(glVertex, 1.0, 1.0, 1.0)                            ' Bottom Right Of The Quad (Top)
+        
+        cbgl3f(glColor, 1.0, 0.5, 0.0)                             ' Set The Color To Orange
+        cbgl3f(glVertex, 1.0, -1.0, 1.0)                           ' Top Right Of The Quad (Bottom)
+        cbgl3f(glVertex, -1.0, -1.0, 1.0)                          ' Top Left Of The Quad (Bottom)
+        cbgl3f(glVertex, -1.0, -1.0, -1.0)                         ' Bottom Left Of The Quad (Bottom)
+        cbgl3f(glVertex, 1.0, -1.0, -1.0)                          ' Bottom Right Of The Quad (Bottom)
+        
+        cbgl3f(glColor, 1.0, 0.0, 0.0)                             ' Set The Color To Red
+        cbgl3f(glVertex, 1.0, 1.0, 1.0)                            ' Top Right Of The Quad (Front)
+        cbgl3f(glVertex, -1.0, 1.0, 1.0)                           ' Top Left Of The Quad (Front)
+        cbgl3f(glVertex, -1.0, -1.0, 1.0)                          ' Bottom Left Of The Quad (Front)
+        cbgl3f(glVertex, 1.0, -1.0, 1.0)                           ' Bottom Right Of The Quad (Front)
+        
+        cbgl3f(glColor, 1.0, 1.0, 0.0)                             ' Set The Color To Yellow
+        cbgl3f(glVertex, 1.0, -1.0, -1.0)                          ' Top Right Of The Quad (Back)
+        cbgl3f(glVertex, -1.0, -1.0, -1.0)                         ' Top Left Of The Quad (Back)
+        cbgl3f(glVertex, -1.0, 1.0, -1.0)                          ' Bottom Left Of The Quad (Back)
+        cbgl3f(glVertex, 1.0, 1.0, -1.0)                           ' Bottom Right Of The Quad (Back)
+        
+        cbgl3f(glColor, 0.0, 0.0, 1.0)                             ' Set The Color To Blue
+        cbgl3f(glVertex, -1.0, 1.0, 1.0)                           ' Top Right Of The Quad (Left)
+        cbgl3f(glVertex, -1.0, 1.0, -1.0)                          ' Top Left Of The Quad (Left)
+        cbgl3f(glVertex, -1.0, -1.0, -1.0)                         ' Bottom Left Of The Quad (Left)
+        cbgl3f(glVertex, -1.0, -1.0, 1.0)                          ' Bottom Right Of The Quad (Left)
+        
+        cbgl3f(glColor, 1.0, 0.0, 1.0)                             ' Set The Color To Violet
+        cbgl3f(glVertex, 1.0, 1.0, -1.0)                           ' Top Right Of The Quad (Right)
+        cbgl3f(glVertex, 1.0, 1.0, 1.0)                            ' Top Left Of The Quad (Right)
+        cbgl3f(glVertex, 1.0, -1.0, 1.0)                           ' Bottom Left Of The Quad (Right)
+        cbgl3f(glVertex, 1.0, -1.0, -1.0)                          ' Bottom Right Of The Quad (Right)
+    cbgl0(glEnd)                                                     ' Done Drawing The Quad
+cbgl0(glEndList)
+
+Dim rtri#, rquad#
+Repeat
+    cbgl1i(glClear, GL_COLOR_BUFFER_BIT + GL_DEPTH_BUFFER_BIT)    ' Clear Screen And Depth Buffer
+    
+    cbgl0(glLoadIdentity)                                         ' Reset The Current Modelview Matrix
+    cbgl3f(glTranslate, -1.5, 0.0, -6.0)                         ' Move Left 1.5 Units And Into The Screen 6.0
+    cbgl4f(glRotate, rtri, 0.0, 1.0, 0.0)                        ' Rotate The Triangle On The X axis ( NEW )
+
+    cbgl1i(glCallList, 1)                                         ' Call Pyramid Display List
+
+    cbgl0(glLoadIdentity)                                         ' Reset The Current Modelview Matrix
+    cbgl3f(glTranslate, 1.5, 0.0, -7.0)                          ' Move Right 1.5 Units And Into The Screen 7.0
+    cbgl4f(glRotate, rquad, 1.0, 1.0, 1.0)                       ' Rotate The Quad On The X axis ( NEW )
+    
+    cbgl1i(glCallList, 2)                                         ' Call Cube Display List
+
+    rtri  = rtri + 0.4         ' Increase The Rotation Variable For The Triangle
+    rquad = rquad -0.3        ' Decrease The Rotation Variable For The Quad
+  
+    cbglFlip()
+    
+    If cbglKeyDown(cbkeyesc) Then cbglTerminate(): End
+    cbglSetWindow("FPS: "+Str(1000.0 / (Timer()-t)))
+    t = Timer()
+Forever
+
